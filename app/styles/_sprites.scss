@@ -1,0 +1,80 @@
+@import "compass/utilities/sprites";
+
+
+@mixin iconSize($size) {
+	width: $size !important;
+	height: $size !important;
+}
+
+@mixin responsive-sprite( $map, $map-width, $map-height, $image ) {
+	$image-file: sprite-file($map, $image);
+	$image-width: image-width($image-file);
+	$image-height: image-height($image-file);
+	$image-x: nth(sprite-position($map, $image), 1);
+	@if $image-x == 0 {
+		$image-x : 0px;
+	}
+	$image-y: nth(sprite-position($map, $image), 2);
+	@if $image-y == 0 {
+		$image-y : 0px;
+	}
+	$image-range-x: $map-width - $image-width;
+	@if $image-range-x == 0 {
+		$image-range-x : $image-width;
+	}
+	$image-range-y: $map-height - $image-height;
+	@if $image-range-y == 0 {
+		$image-range-y : $image-height;
+	}
+	background-position: percentage( -1 * ($image-x / $image-range-x)  ) percentage( -1 * ($image-y / $image-range-y) );
+	background-size: percentage( $map-width / $image-width ); 
+	width: $image-width;
+	height: $image-height; 
+}
+
+@mixin create-responsive-sprites( $sprite-map, $class-name: icon ) {
+	.#{$class-name} {
+		background: $sprite-map;
+		&.small {
+			@include iconSize(32px); 
+		}
+
+		&.medium {
+			@include iconSize(64px);
+		}
+
+		&.big {
+			@include iconSize(100px);
+		}
+	}
+
+	$sprite-file: sprite-path($sprite-map);
+	$sprite-width: image-width($sprite-file);
+	$sprite-height: image-height($sprite-file);
+	$sprite-names: sprite-names($sprite-map);
+
+	@each $sprite in $sprite-names {
+		//Check if it is hover sprite
+		$sprite-for-hover-state: str-index($sprite, "hover"); 
+
+		@if $sprite-for-hover-state == null {
+
+			$has-hover-image: index($sprite-names, $sprite + -hover);
+			.#{$class-name}-#{$sprite} {
+
+				@include responsive-sprite( $icons, $sprite-width, $sprite-height, $sprite );
+
+				@if $has-hover-image {
+					&:hover {
+						@include responsive-sprite( $icons, $sprite-width, $sprite-height, $sprite + -hover );
+					}
+				} 
+			}
+		} 
+	}
+}
+
+$icons: sprite-map("sprites/icons/*.png", $layout: smart);
+
+@include create-responsive-sprites($icons);
+

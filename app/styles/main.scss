@@ -1,0 +1,70 @@
+@import "sprites";
+@import "compass/css3/transition";
+
+$bg-color: #44516c;
+
+body {
+	background: $bg-color;
+	color: white;
+	font-family: monoscope; 
+} 
+
+.content {
+	text-align: center;	
+	.center {
+		display: table;
+		margin:auto;
+	} 
+	background: lighten($bg-color, 10%);
+}  
+
+.inline-block {
+	display: inline-block;
+}
+
+.note {
+  	display:table;
+  	background-color: white;
+  	width:800px;
+  	padding: 20px;
+  	box-sizing: border-box;
+  	color: black;
+  	line-height: 28px;
+    word-wrap: break-word;
+  	margin: 20px auto;
+ 	 box-shadow: 5px 5px 15px #424242;
+}
+
+img {
+  display: block;
+  margin: 10px auto;
+}
+
+
+
+.center {
+	background: white;
+	padding:15px;
+}
+
+.col {
+	margin-bottom: 10px;
+}
+
+.title {
+	border-bottom: 1px solid white;
+	text-transform: uppercase;
+	padding-bottom:20px;
+	margin-bottom: 20px;
+}
+
+.row-centered {
+	text-align:center;
+}
+.col-centered {
+	display:inline-block;
+	float:none;
+	margin-right:-4px;
+}
+
+
