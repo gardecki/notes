@@ -40,13 +40,14 @@
 		}
 
 		&.medium {
-			@include iconSize(64px);
+			@include iconSize(100px);
 		}
 
 		&.big {
-			@include iconSize(100px);
+			@include iconSize(200px);
 		}
 	}
+
 
 	$sprite-file: sprite-path($sprite-map);
 	$sprite-width: image-width($sprite-file);

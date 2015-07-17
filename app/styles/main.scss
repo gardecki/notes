@@ -1,70 +1,189 @@
 @import "sprites";
-@import "compass/css3/transition";
+@import "cross-browser-stuff";
 
-$bg-color: #44516c;
+$bg-color: #e3a600;
+$header-color: rgba( 255, 255, 255, 0.2);
+$text-color: #fff;
+$background-start: #471B6D;
+$background-end: #FF7E7E;
+$medium-screen: "only screen and ( max-width : 1024px )";
 
 body {
-	background: $bg-color;
-	color: white;
-	font-family: monoscope; 
-} 
-
-.content {
-	text-align: center;	
-	.center {
-		display: table;
-		margin:auto;
-	} 
-	background: lighten($bg-color, 10%);
-}  
-
-.inline-block {
-	display: inline-block;
+  	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+	font-weight: 100;
+  	color: white;
+  	min-height: 100vh;
+ 	margin:0;
+	@include linear-gradient( $background-start, $background-end );
 }
 
-.note {
-  	display:table;
-  	background-color: white;
-  	width:800px;
-  	padding: 20px;
-  	box-sizing: border-box;
-  	color: black;
-  	line-height: 28px;
-    word-wrap: break-word;
-  	margin: 20px auto;
- 	 box-shadow: 5px 5px 15px #424242;
+header {
+	height:60px;
+	background: $header-color;
+	width:100%;
+	margin:0px 0px 30px 0px;
+	button {
+		background: rgba(0, 0, 0, 0);
+		border: 2px solid white;
+		padding: 10px;
+		margin: 10px;
+		box-sizing: border-box;
+		color: white;
+		font-size: 14px;
+		text-transform: uppercase;
+		&:hover {
+		  background: rgba(256, 256, 256, 0.2);;
+		  color: white;
+		}
+	}
+	.title {
+		margin-left:10px;
+		line-height:60px;
+		font-size:24px;
+	}
 }
 
-img {
-  display: block;
-  margin: 10px auto;
+button {
+	border: none;
+	cursor:pointer;
 }
 
-
-
-.center {
-	background: white;
-	padding:15px;
+.container {
+	min-width:40%;
+	max-width:40%;
+	display:table;
+	margin:auto;
 }
 
-.col {
-	margin-bottom: 10px;
+@media #{$medium-screen} {
+	.container {
+		min-width:60%;
+		max-width:60%;
+	}
+	.editor {
+		min-width:50%;
+		max-width:50%;
+	}
 }
 
-.title {
-	border-bottom: 1px solid white;
+.editorContainer {
+  	margin-bottom: 40px;
+}
+
+:focus {
+	outline: 0;
+	outline: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.editorHeader {
+	margin: 2px;
 	text-transform: uppercase;
-	padding-bottom:20px;
-	margin-bottom: 20px;
 }
 
-.row-centered {
-	text-align:center;
+.noteBlock {
+	margin-bottom:32px;
 }
-.col-centered {
-	display:inline-block;
-	float:none;
-	margin-right:-4px;
+
+.noteContainer {
+	height: auto;
+	min-width:100%;
+	box-sizing: border-box;
+	padding: 1em;
+	margin-top: 0px;
+	background-color: $header-color;
+	cursor: pointer;
+	word-wrap: break-word;
+	word-break: break-word;
+	@include shadow( 0px 0px 20px 0px, rgba(50, 50, 50, 0.25));
+	.header {
+		text-align: right;
+		padding-top: 10px;
+		color: lighten( $text-color, 20% );
+		font-size: 12px;
+		font-weight: 100;
+	}
+	img {
+		display: block;
+		margin: 5px auto;
+	}
+}
+
+.frt {
+	float: right;
+	&:after {
+		clear: both;
+	}
+}
+
+.flt {
+	float: left;
+	&:after {
+		clear: both;
+	}
+}
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(99, 0, 53, 0.7);
+	z-index: 99999;
+	opacity:0;
+	pointer-events: none;
+	@include transition( opacity, 400ms, ease-in );
+	&.visible {
+		opacity:1;
+		pointer-events: auto;
+	}
+
+	.modalEditor {
+		background: #fff;
+		min-height: 240px;
+		max-height: 480px;
+		padding: 24px;
+		@include shadow( 0px 0px 20px 0px, rgba(50, 50, 50, 0.25));
+		line-height: 1.5;
+		overflow-y: auto;
+	}
+}
+
+.editorToolbar {
+	margin: 4px auto;
+	height: 32px;
+	.editorHeader {
+		position: absolute;
+		top: 16px;
+		left: -2px;
+		color: white;
+	}
+	button {
+		margin-left: 4px;
+	}
+}
+
+button.close {
+	position: relative;
+	left: 100%;
+	margin-left: -32px;
+	padding:0;
+}
+
+.modalDialog .editor {
+	position: absolute;
+	width: 30%;
+	min-height: 300px;
+	max-height: 480px;
+	top:50%;
+	left: 50%;
+	@include transform( translate( -50%, -50% ) );
+	color: black;
 }
 
 

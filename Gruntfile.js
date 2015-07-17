@@ -62,8 +62,8 @@ grunt.initConfig({
 
 	open : {
 		dev : {
-			path: 'http://localhost:9001',
-			app: 'Chrome'
+			path: 'http://localhost:9000',
+			app: 'Google Chrome'
 		}
 	},
 	
@@ -84,9 +84,10 @@ grunt.initConfig({
 			files: [{
 				cwd: 'app',
 				src: [
-					'images/**/*', 
+					'favicon.ico',
+					'images/*', 
 					'images/sprites/*',
-					'!images/sprites/*/*' 
+					'!images/sprites/icons' 
 				],
 				dest: 'build/',
 			}],
@@ -97,9 +98,9 @@ grunt.initConfig({
 	
 	connect: {
 		options: {
-			port: 9001,
+			port: 9000,
 			hostname: 'localhost',
-			livereload: 35728,
+			livereload: 35729,
 			base: 'build/'
 		},
 		livereload: {

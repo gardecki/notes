@@ -1,55 +1,77 @@
-myApp.controller('MainCtrl', ['$scope', function($scope) {
-	
-$scope.kwa = "lala jfskdjfnhkjsdf jfskdjfnhkjsdf jfskdjfnhkjsdf   jfskdjfnhkjsdf  jfskdjfnhkjsdf jfskdjfnhkjsdf jfskdjfnhkjsdf jfskdjfnhkjsdf  jfskdjfnhkjsdfjfskdjfnhkjsdfjfskdjfnhkjsdfjfskdjfnhkjsdf jfskdjfnhkjsdf lalala kwakwakwa http://www.quicksprout.com/images/foggygoldengatebridge.jpg ciekawe jak to bedzie wygl?da?o bo wszystko wskazuje na to , ?e b?dzie to co? obrzydliwego.jfskdjfnhkjsdf http://images6.fanpop.com/image/photos/32300000/Melissa-melissa-benoist-32325941-960-637.jpg hoho http://www.quicksprout.com/images/foggygoldengatebridge.jpg hoho";
-	$scope.html = "<p>uaua</p>";
-}]);
+app.controller('MainCtrl', ['$scope', '$rootScope', 'notesData', function($scope, $rootScope, notesData) {
 
+	/***
+	 * Initialize scope variables
+	 */
+		notesData.getAllNotes().then( function( data ) {
+			$scope.notes = data;
+		});
 
-myApp.directive('showImages', [ '$compile', function( $compile ) {
+		$scope.modalVisible = false;
+		$scope.editableContent = null;
+		$scope.newNote = {
+			content: ''
+		};
 
-	return {
-		restrict: 'E',
-		replace: true,
-		scope: {
-			content: '='
-		},
-		controller: function ( $scope ) {
+	/***
+	 * Note operations
+	 */
 
-		},
-		link: function( scope, elem, attrs ){
-
-			scope.$watch('content', function(newValue, oldValue) {
-				if (newValue !== oldValue) {
-					console.log("I see a data change!");
-				}
-			});
-
-
-			var template = '<div class="note">' + scope.content + '</div>';
-
-			var images = scope.content.match(/https?:\/\/\S*\.(?:png|jpg)/g);
-
-			/*for(var i = 0 ; i < images.length ; i++ ) {
-				var replacement = '<img src="' + images[i] + '" width="100px" >';
-				template = template.replace(images[i], replacement);
-			}*/
-
-			var patt=/https?:\/\/\S*\.(?:png|jpg)/g;
-
-			while ( match = patt.exec(template) ) {
-
-				console.log( template.substr( match.index, patt.lastIndex - match.index ) );
-
-				template = template.substr( 0, match.index ) + '<img src="' + match + '" height="200px" >' + template.substr( patt.lastIndex, template.length - patt.lastIndex );
-
-				console.log(match.index + ' ' + patt.lastIndex);
+		/**
+		 * Add
+		 */
+		$scope.addNote = function() {
+			if(!!$scope.newNote.content) {
+				notesData.addNote( $scope.newNote.content).then( function() {
+					$scope.newNote.content = "";
+				});
 			}
+		};
+
+		/**
+		 * Update
+		 */
+		$scope.updateNote = function() {
+			notesData.updateNote( $scope.noteToEdit).then( function() {
+				$rootScope.$broadcast( 'noteUpdated', { noteId: $scope.noteToEdit.id } );
+				$scope.editableContent = null;
+				$scope.modalVisible = false;
+			});
+		};
+
+		/**
+		 * Delete
+		 */
+		$scope.deleteNote = function( noteId ) {
+			notesData.deleteNote( noteId );
+		};
+
+		/**
+		 * Remove all notes
+		 */
+		$scope.clearAll = function() {
+			notesData.clearAllNotes().then( function() {
+				$scope.notes.length = 0;
+			});
+		};
 
 
+	/***
+	 *	Editor operations
+	 */
+		$scope.openEditor = function( note ) {
+			$scope.editableContent = note.content;
+			$scope.noteToEdit = note;
+			$scope.modalVisible = true;
+			$rootScope.$broadcast('openEditor');
 
-			template = $compile(template)(scope);
-			elem.replaceWith(template);
-		}
-	}
+		};
 
+		$scope.closeEditor = function() {
+			$scope.noteToEdit.content = $scope.editableContent;
+			$scope.modalVisible = false;
+		};
+	
 }]);
+
+

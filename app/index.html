@@ -3,15 +3,50 @@
 
 <head>
 	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style.css" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 
-<body ng-app="myApp" ng-controller="MainCtrl">
+<body ng-app="notesApp" ng-controller="MainCtrl">
 
+	<header>
+		<span class="title">NOTES</span>
+		<button class="frt" ng-click="clearAll()">Clear All Notes</button>
+	</header>
 
-	<show-images content="kwa"></show-images>
-	<show-images content="kwa"></show-images>
+	<div class="container">
+		<div class="editorContainer">
+			<p class="editorHeader">Add Note</p>
+			<div contenteditable ng-model="newNote.content" class="noteContainer"></div>
+			<div class="editorToolbar">
+				<button ng-click="addNote()" class="frt icon icon-add small"></button>
+			</div>
+		</div>
+		<section class="noteBlock" ng-repeat="note in notes | orderBy:'+':true track by note.id">
+			<note ng-click="openEditor( note )" note="note"></note>
+			<div class="editorToolbar">
+				<button ng-click="openEditor( note )" class="frt icon icon-edit small"></button>
+				<button ng-click="deleteNote( note.id )" class="frt icon icon-garbage small"></button>
+			</div>
+		</section>
+	</div>
 
+	<div class="modalDialog" ng-class="{ visible : modalVisible }">
+		<div class="editor">
+			<div class="editorToolbar">
+				<span class="editorHeader">Edit Note</span>
+				<button ng-click="closeEditor()" class="close icon icon-delete small"></button>
+			</div>
+			<div class="modalEditor">
+				<div contenteditable focusable ng-model="noteToEdit.content">
+				</div>
+			</div>
+			<div class="editorToolbar">
+				<button ng-click="updateNote()" class="frt icon icon-save small"></button>
+			</div>
+		</div>
+	</div>
 
 	<script src="script.js"></script>
 	<script src="//localhost:35729/livereload.js"></script>
