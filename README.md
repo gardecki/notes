@@ -1,5 +1,5 @@
 # notes
-Simple angular 'notes' application with HTML5 localeStorage
+Simple angular 'notes' application with HTML5 localeStorage usage.
 
 ##1. Preparation
 1. install sass & compass (it's used for spriting and compiling scss to css)
@@ -7,7 +7,7 @@ Simple angular 'notes' application with HTML5 localeStorage
 3. install bower
 4. instal grunt & grunt-cli
 
-##How to build it?
+##2. How to build it?
 1. npm install
 2. bower install
 3. grunt
